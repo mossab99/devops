@@ -1,0 +1,50 @@
+name: Deploy DevOps App to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # 2. Copy project files to EC2
+      - name: Upload files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: .
+          target: /home/ubuntu/devops-app
+
+      # 3. Build and run Docker container on EC2
+      - name: Build and deploy Docker container
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
+
+            APP_NAME=devops-app
+            APP_DIR=/home/ubuntu/devops-app
+
+            cd $APP_DIR
+
+            docker stop $APP_NAME || true
+            docker rm $APP_NAME || true
+
+            docker build -t $APP_NAME:latest .
+            docker run -d \
+              --restart unless-stopped \
+              -p 80:80 \
+              --name $APP_NAME \
+              $APP_NAME:latest
