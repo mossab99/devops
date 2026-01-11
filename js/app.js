@@ -37,6 +37,7 @@ function saveData() {
 
 // --- DOM Elements ---
 const subjectListEl = document.getElementById('subject-list');
+const footerSubjectsListEl = document.getElementById('footer-subjects-list');
 const taskListEl = document.getElementById('task-list');
 const currentSubjectNameEl = document.getElementById('current-subject-name');
 const addTaskBtn = document.getElementById('add-task-btn');
@@ -54,7 +55,7 @@ function renderSubjects() {
         const li = document.createElement('li');
         li.className = `subject-item ${state.currentSubjectId === subject.id ? 'active' : ''}`;
         li.onclick = () => selectSubject(subject.id);
-        
+
         li.innerHTML = `
             <span class="color-dot" style="background: ${subject.color}"></span>
             <span style="flex: 1">${subject.name}</span>
@@ -62,11 +63,25 @@ function renderSubjects() {
         `;
         subjectListEl.appendChild(li);
     });
+    renderFooter();
+}
+
+function renderFooter() {
+    footerSubjectsListEl.innerHTML = '';
+    state.subjects.forEach(subject => {
+        const span = document.createElement('span');
+        span.className = 'footer-subject-tag';
+        span.innerHTML = `
+            <span class="color-dot" style="background: ${subject.color}"></span>
+            ${subject.name}
+        `;
+        footerSubjectsListEl.appendChild(span);
+    });
 }
 
 function renderTasks() {
     taskListEl.innerHTML = '';
-    
+
     if (!state.currentSubjectId) {
         taskListEl.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 3rem;">Select a subject to see tasks.</div>';
         addTaskBtn.disabled = true;
@@ -75,7 +90,7 @@ function renderTasks() {
 
     addTaskBtn.disabled = false;
     const filteredTasks = state.tasks.filter(t => t.subjectId === state.currentSubjectId);
-    
+
     if (filteredTasks.length === 0) {
         taskListEl.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 3rem;">No tasks yet. Click "Add Task" to start!</div>';
         return;
@@ -103,7 +118,7 @@ function renderTasks() {
 }
 
 function getPriorityColor(priority) {
-    switch(priority) {
+    switch (priority) {
         case 'high': return '#ef4444';
         case 'medium': return '#f59e0b';
         case 'low': return '#10b981';

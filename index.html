@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudySync | Student Checklist</title>
-    <meta name="description" content="Manage your study tasks and subjects with StudySync - the modern student checklist.">
+    <meta name="description"
+        content="Manage your study tasks and subjects with StudySync - the modern student checklist.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -23,7 +26,8 @@
             <!-- Sidebar: Subjects Management -->
             <aside class="sidebar">
                 <div class="glass-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                         <h3>Subjects</h3>
                         <button class="btn btn-primary" id="add-subject-btn">+</button>
                     </div>
@@ -102,6 +106,16 @@
         </div>
     </div>
 
+    <footer class="glass-card" id="app-footer">
+        <div class="footer-content">
+            <span class="footer-label">Your Subjects:</span>
+            <div id="footer-subjects-list" class="footer-subjects-list">
+                <!-- Footer subjects will be rendered here -->
+            </div>
+        </div>
+    </footer>
+
     <script src="js/app.js"></script>
 </body>
+
 </html>
